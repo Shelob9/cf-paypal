@@ -1,18 +1,17 @@
 {
-  "name": "calderawp/cf-paypal-express",
-  "description": "PayPal Express checkout processor for Caldera Forms.",
+  "name": "misfist/cf-paypal",
+  "description": "PayPal checkout processor for Caldera Forms.",
   "type": "wordpress-plugin",
   "keywords": [
     "wordpress",
     "caldera",
     "paypal"
   ],
-  "license": "GPL-2.0+",
+  "license": "GPL-3.0",
   "authors": [
     {
-      "name": "David Cramer",
-      "homepage": "http://cramer.co.za",
-      "role": "Lead Developer"
+      "name": "Pea",
+      "homepage": "https://github.com/misfist"
     }
   ],
   "require" : {
