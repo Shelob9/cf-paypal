@@ -21,7 +21,7 @@ if( ! is_ssl() ){
 // Check to see if using the CF Account Connections addon to manage accounts
 if( class_exists( 'Account_Connections' ) ){
 	echo '<div class="caldera-config-group">';
-	echo '<label>' . __('PayPal Account', 'cf-paypal-express') . '</label>';
+	echo '<label>' . __('PayPal Account', 'cf-paypal') . '</label>';
 	echo '<div class="caldera-config-field">';
 	$accounts = get_option( '_cf_account_connections' );
 	?>
@@ -36,7 +36,7 @@ if( class_exists( 'Account_Connections' ) ){
 		?>
 		</select>
 	<?php
-	echo '<p style="margin: 3px 0px;"><a href="' . admin_url( 'admin.php?page=account_connections' ) . '" target="_blank">' . __('Setup accounts in Account Connections', 'cf-paypal-express') . '</a></p>';
+	echo '<p style="margin: 3px 0px;"><a href="' . admin_url( 'admin.php?page=account_connections' ) . '" target="_blank">' . __('Setup accounts in Account Connections', 'cf-paypal') . '</a></p>';
 
 	echo '</div></div>';
 }else{
@@ -44,19 +44,19 @@ if( class_exists( 'Account_Connections' ) ){
 // Fallback if not using the CF Account Connections addon
 ?>
 <div class="caldera-config-group">
-	<label><?php _e('API Username', 'cf-paypal-express'); ?></label>
+	<label><?php _e('API Username', 'cf-paypal'); ?></label>
 	<div class="caldera-config-field">		
 		<input type="text" id="{{_id}}_username" class="block-input required field-config" name="{{_name}}[username]" value="{{username}}" required>
 	</div>
 </div>
 <div class="caldera-config-group">
-	<label><?php _e('API Password', 'cf-paypal-express'); ?></label>
+	<label><?php _e('API Password', 'cf-paypal'); ?></label>
 	<div class="caldera-config-field">		
 		<input type="text" id="{{_id}}_password" class="block-input required field-config" name="{{_name}}[password]" value="{{password}}" required>
 	</div>
 </div>
 <div class="caldera-config-group">
-	<label><?php _e('API Signature', 'cf-paypal-express'); ?></label>
+	<label><?php _e('API Signature', 'cf-paypal'); ?></label>
 	<div class="caldera-config-field">		
 		<input type="text" id="{{_id}}_signature" class="block-input required field-config" name="{{_name}}[signature]" value="{{signature}}" required>
 	</div>
@@ -81,20 +81,20 @@ if( class_exists( 'Account_Connections' ) ){
 <?php } ?>
 
 <div class="caldera-config-group">
-	<label for="{{_id}}_sandbox"><?php _e('Sandbox Mode', 'cf-paypal-express'); ?></label>
+	<label for="{{_id}}_sandbox"><?php _e('Sandbox Mode', 'cf-paypal'); ?></label>
 	<div class="caldera-config-field">
 		<input id="{{_id}}_sandbox" type="checkbox" class="field-config" name="{{_name}}[sandbox]" value="1" {{#if sandbox}}checked="checked"{{/if}}>
 	</div>
 </div>
 
 <div class="caldera-config-group">
-	<label><?php _e('Price', 'cf-paypal-express'); ?></label>
+	<label><?php _e('Price', 'cf-paypal'); ?></label>
 	<div class="caldera-config-field">
 		{{{_field slug="price" type="calculation,text,hidden" exclude="system"}}}
 	</div>
 </div>
 <div class="caldera-config-group">
-	<label><?php _e('Currency', 'cf-paypal-express'); ?></label>
+	<label><?php _e('Currency', 'cf-paypal'); ?></label>
 	<div class="caldera-config-field">
 		<select id="{{_id}}_currency" class="required field-config" name="{{_name}}[currency]">
 			<option value="USD" {{#is currency value="USD"}}selected="selected"{{/is}}>USD</option>
@@ -126,20 +126,20 @@ if( class_exists( 'Account_Connections' ) ){
 	</div>
 </div>
 <div class="caldera-config-group">
-	<label><?php _e('Item Name', 'cf-paypal-express'); ?></label>
+	<label><?php _e('Item Name', 'cf-paypal'); ?></label>
 	<div class="caldera-config-field">		
 		<input type="text" id="{{_id}}_name" class="block-input field-config" name="{{_name}}[name]" value="{{name}}">
 	</div>
 </div>
 <div class="caldera-config-group">
-	<label><?php _e('Item Description', 'cf-paypal-express'); ?></label>
+	<label><?php _e('Item Description', 'cf-paypal'); ?></label>
 	<div class="caldera-config-field">		
 		<input type="text" id="{{_id}}_desc" class="block-input field-config" name="{{_name}}[desc]" value="{{desc}}">
 	</div>
 </div>
 
 <div class="caldera-config-group">
-	<label><?php _e('Quantity Field', 'cf-paypal-express'); ?></label>
+	<label><?php _e('Quantity Field', 'cf-paypal'); ?></label>
 	<div class="caldera-config-field">
 		{{{_field slug="qty" exclude="system"}}}
 	</div>

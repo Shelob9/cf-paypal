@@ -18,7 +18,7 @@
  * @since 1.0.0
  */
 function cf_paypal_express_load_plugin_textdomain(){
-	load_plugin_textdomain( 'cf-paypal-express', FALSE, CF_PAYPAL_EXPRESS_PATH . 'languages');
+	load_plugin_textdomain( 'cf-paypal', FALSE, CF_PAYPAL_EXPRESS_PATH . 'languages');
 }
 
 
@@ -47,15 +47,17 @@ function cf_paypal_express_redirect_topaypal($url, $form, $config, $processid){
  * Registers the PayPal Processor
  *
  * @since 1.0.0
- * @param array		$processors		array of current regestered processors
+ * @since 1.1.7
  *
- * @return array	array of regestered processors
+ * @param array	$processors		array of current regestered processors
+ *
+ * @return array $processors 	array of regestered processors
  */
-function cf_paypal_express_register_processor($processors){
+function cf_paypal_express_register_processor( $processors ) {
 
 	$processors['paypal_express'] = array(
-		"name"				=>	__('PayPal Express', 'cf-paypal-express'),
-		"description"		=>	__("Process a payment via PayPal", 'cf-paypal-express'),
+		"name"				=>	__( 'PayPal', 'cf-paypal' ),
+		"description"		=>	__( 'Process a payment via PayPal', 'cf-paypal' ),
 		"icon"				=>	CF_PAYPAL_EXPRESS_URL . "icon.png",
 		"single"			=>	true,
 		"pre_processor"		=>	'cf_paypal_express_setup_payment',
@@ -114,7 +116,7 @@ function cf_paypal_express_set_transient($transdata, $form, $referrer, $processi
 
 		// setup return urls
 		$returnurl = $referrer['scheme'] . '://' . $referrer['host'] . $referrer['path'];
-		
+
 		$queryvars = array(
 			'cf_tp' => $processid
 		);
@@ -122,7 +124,7 @@ function cf_paypal_express_set_transient($transdata, $form, $referrer, $processi
 			$queryvars = array_merge($referrer['query'], $queryvars);
 		}
 
-		// if a request has not happend yet- 
+		// if a request has not happend yet-
 		if(!isset($transdata['paypal_express']['request'])){
 			// get settings
 			$settings = $transdata['paypal_express']['config'];
@@ -155,7 +157,7 @@ function cf_paypal_express_set_transient($transdata, $form, $referrer, $processi
 			}else{
 				$request['PAYMENTREQUEST_0_AMT'] = $request['PAYMENTREQUEST_0_ITEMAMT']	= $request['L_PAYMENTREQUEST_0_AMT0'];
 			}
-			
+
 
 			// setup checkout type
 			//$request['SOLUTIONTYPE'] = 'Sole';
@@ -196,7 +198,7 @@ function cf_paypal_express_set_transient($transdata, $form, $referrer, $processi
 			}else{
 
 				parse_str($result['body'],$data);
-				
+
 				// check for ack
 				if( isset( $data[ 'ACK' ] ) && strtolower( $data['ACK'] ) === 'success' && isset($data['TOKEN'])){
 					// yup
@@ -210,7 +212,7 @@ function cf_paypal_express_set_transient($transdata, $form, $referrer, $processi
 
 			}
 		}
-	
+
 	}
 
 	return $transdata;
@@ -235,22 +237,22 @@ function cf_paypal_express_process_payment($config, $form){
 	}
 
 	if( !empty( $transdata['paypal_express']['checkout'] ) && !empty( $transdata['paypal_express']['checkout']['TOKEN'] ) && !empty( $transdata['paypal_express']['checkout']['PAYERID'] ) ){
-		
+
 		// complete payment
 		$request = $transdata['paypal_express']['request'];
 		$request['METHOD'] = 'DoExpressCheckoutPayment';
 		$request['TOKEN'] = $transdata['paypal_express']['checkout']['TOKEN'];
 		$request['PayerID'] = $transdata['paypal_express']['checkout']['PAYERID'];
-		
+
 		// do request
 		$result = wp_remote_post( $transdata['paypal_express']['request_url'] , array('timeout' => 120, 'httpversion' => '1.1', 'body' => $request) );
-		
+
 		// check for error
 		if( is_wp_error( $result ) ){
-		
+
 			$transdata['note'] 		= $result->get_error_message();
 			$transdata['error']		= true;
-		
+
 		}else{
 
 			//payment data
@@ -286,8 +288,8 @@ function cf_paypal_express_process_payment($config, $form){
 
 			return $returns;
 
-		}	
-		
+		}
+
 	}
 }
 
@@ -305,16 +307,16 @@ function cf_paypal_express_setup_payment($config, $form){
 	global $transdata;
 
 	if(!empty($_GET['pp_cancel'])){
-		
+
 		if(!empty($transdata['paypal_express'])){
 			unset($transdata['paypal_express']);
 		}
-		
+
 		$return = array(
 			'type'	=> 'error',
 			'note'	=> 'Transaction has been canceled'
 		);
-		
+
 		return $return;
 
 	}else{
@@ -322,7 +324,7 @@ function cf_paypal_express_setup_payment($config, $form){
 
 		// set up checkout if values are set
 		if( !empty($_GET['cf_tp']) && !empty($_GET['token']) && !empty($_GET['PayerID']) && empty($transdata['paypal_express']['checkout']) ){
-			
+
 			// do an auth
 			$request = $transdata['paypal_express']['request'];
 			$request['METHOD'] = 'GetExpressCheckoutDetails';
@@ -336,14 +338,14 @@ function cf_paypal_express_setup_payment($config, $form){
 				$transdata['type'] 		= 'error';
 			}else{
 
-				parse_str($result['body'],$data);					
+				parse_str($result['body'],$data);
 				$transdata['paypal_express']['checkout'] = $data;
 
 			}
 
 		}
 
-		// check if payment is new 
+		// check if payment is new
 		if(empty($transdata['paypal_express']['checkout'])){
 
 			// only if a new payment is started.
@@ -351,16 +353,16 @@ function cf_paypal_express_setup_payment($config, $form){
 			if( isset( $config['paypal_accout_id'] ) ){
 				$accounts = get_option( '_cf_account_connections' );
 				if( empty( $accounts['paypal'][$config['paypal_accout_id']]['api_username'] ) ){
-					$pubnote = __('Internal Error: Sorry, Please try again later.', 'cf-paypal-express');
+					$pubnote = __('Internal Error: Sorry, Please try again later.', 'cf-paypal');
 					if( current_user_can( 'activate_plugins' ) ){
-						$pubnote = __('PayPal is setup with Account Connection but the account is missing or has been removed.', 'cf-paypal-express');
+						$pubnote = __('PayPal is setup with Account Connection but the account is missing or has been removed.', 'cf-paypal');
 					}
 					$return = array(
 						'type'	=> 'error',
 						'note'	=> $pubnote
 					);
 					return $return;
-				}				
+				}
 				$settings = $config;
 				$settings['username'] = $accounts['paypal'][$config['paypal_accout_id']]['api_username'];
 				$settings['password'] = $accounts['paypal'][$config['paypal_accout_id']]['api_password'];
@@ -377,4 +379,3 @@ function cf_paypal_express_setup_payment($config, $form){
 	}
 
 }
-
