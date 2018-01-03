@@ -1,1 +1,1 @@
-cf-paypal-express
+cf-paypal
