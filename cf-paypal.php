@@ -7,7 +7,7 @@
  * Plugin URI: https://github.com/misfist/cf-paypal
  * Description: PayPal checkout processor for Caldera Forms.
  * Version: 1.1.7
- * Author:      Misfit
+ * Author:      Misfist
  * Author URI:  https://github.com/misfist
  * Text Domain: cf-paypal
  * License:     GPL-3.0
